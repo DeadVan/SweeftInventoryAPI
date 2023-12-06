@@ -1,0 +1,10 @@
+{
+  "base_url": "https://api.inventory.sweeftdigital.com",
+  "login_post": "/user/login",
+  "userView_get": "/user/view",
+  "userList_get": "/user/list",
+  "userViewDetailed_get" : "/user/view/detailed",
+  "stockItemList_get" : "/stockitem/list",
+  "stockItemDetailedId_get" : "/stockitem/detailed/{id}",
+  "stockItemId_delete" : "/stockitem/{id}"
+}
