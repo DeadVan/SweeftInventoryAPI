@@ -30,6 +30,17 @@ public class DataReader {
         return environment.getValue("/userViewDetailed_get").toString();
     }
 
+    public static String getStockItemAddEndpoint() {
+        return environment.getValue("/stockItem_post").toString();
+    }
+
+    public static String getStockItemUpdateEndpoint() {
+        return environment.getValue("/stockItem_put").toString();
+    }
+    public static String getItemRequestEndpoint() {
+        return environment.getValue("/itemRequest_put").toString();
+    }
+
     public static String getStockItemListEndpoint() {
         return environment.getValue("/stockItemList_get").toString();
     }
