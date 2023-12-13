@@ -10,25 +10,25 @@ import io.restassured.response.Response;
 import java.io.File;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
-import static dto.CategoriesDto.postCategory;
-import static dto.CategoryAddDto.categoryAddDto;
+import static dto.category.CategoriesDto.postCategory;
+import static dto.category.CategoryAddDto.categoryAddDto;
 import static dto.LoginCrd.loginCrd;
 import static utils.DataReader.*;
 
-public class CategoryController {
+public class CategoryReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static Response getCategory(int categoryId){
         getLogger().info("sending get request for category with id - " + categoryId);
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .get(getBaseUrl() + getCategoryByIdEndpoint() + categoryId);
+                .get(getBaseUrl() + getEndPoint("category_get") + categoryId);
     }
     public static Response getCategories(){
         getLogger().info("sending get request for categories list");
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .get(getBaseUrl() + getCategoriesEndpoint());
+                .get(getBaseUrl() + getEndPoint("categoriesList_get"));
     }
     public static Response postCategory() {
         getLogger().info("sending post request to create category");
@@ -39,11 +39,11 @@ public class CategoryController {
                     .multiPart("name",categoryAddDto.getName())
                     .multiPart("attributes",categoryAddDto.getAttributes())
                     .multiPart("icon",categoryAddDto.getIcon())
-                    .post(getBaseUrl() + postCategoryEndpoint());
+                    .post(getBaseUrl() + getEndPoint("category_post"));
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postCategory.setCategoryId(jsonNode.get("categoryId").asInt());
-            getLogger().info("Created category with id - " + postCategory);
+            getLogger().info("Created category  - " + postCategory);
             return response;
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -62,7 +62,7 @@ public class CategoryController {
                     .header("Authorization","Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
-                    .put(getBaseUrl()+putCategoryEndpoint()+ postCategory.getCategoryId());
+                    .put(getBaseUrl()+getEndPoint("")+ postCategory.getCategoryId());
             return response;
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -73,6 +73,6 @@ public class CategoryController {
         getLogger().info("sending delete request for category with id - " + postCategory.getCategoryId());
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .delete(getBaseUrl() + deleteCategoryEndpoint() + postCategory.getCategoryId());
+                .delete(getBaseUrl() + getEndPoint("category_delete") + postCategory.getCategoryId());
     }
 }

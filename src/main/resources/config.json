@@ -16,5 +16,16 @@
   "category_get" : "/category/",
   "category_post" : "/category/",
   "category_put" : "/category/",
-  "category_delete" : "/category/"
+  "category_delete" : "/category/",
+  "brand_get" : "/brand/",
+  "brand_post" : "/brand/",
+  "brand_put" : "/brand/",
+  "brand_delete" : "/brand/",
+  "brandList_get" : "/brand/",
+  "model_get" : "/model/",
+  "model_put" : "/model/",
+  "model_delete" : "/model/",
+  "model_post" : "/model/",
+  "modelList_get" : "/model/list"
+
 }

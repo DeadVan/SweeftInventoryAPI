@@ -1,4 +1,4 @@
-package dto;
+package dto.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,5 @@
-package dto;
+package dto.model;
+
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,12 +10,12 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserListResponse {
+public class ModelListResponse {
 
-    private List<UserDto> content;
+    private List<ModelDto> content;
 
     @JsonCreator
-    public UserListResponse(@JsonProperty("content") List<UserDto> content) {
+    public ModelListResponse(@JsonProperty("content") List<ModelDto> content) {
         this.content = content;
     }
 }

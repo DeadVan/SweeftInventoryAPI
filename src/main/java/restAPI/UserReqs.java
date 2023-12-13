@@ -3,17 +3,16 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.UserDto;
+import dto.user.UserDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import static aquality.selenium.browser.AqualityServices.getLogger;
-import static dto.CategoriesDto.postCategory;
 import static dto.LoginCrd.loginCrd;
 import static utils.DataReader.*;
 import static utils.RandUtils.generateString;
 
-public class UserController {
+public class UserReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static UserDto registerUser = new UserDto();
 
@@ -26,7 +25,7 @@ public class UserController {
                     .header("Content-Type", ContentType.JSON)
                     .header("origin","admin")
                     .body(jsonString)
-                    .post(getBaseUrl() + getLoginPostEndpoint());
+                    .post(getBaseUrl() + getEndPoint("login_post"));
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             loginCrd.setAccessToken(jsonNode.get("accessToken").asText());
@@ -41,7 +40,7 @@ public class UserController {
         getLogger().info("sending get request for user view");
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .get(getBaseUrl() + getUserViewEndpoint());
+                .get(getBaseUrl() + getEndPoint("userView_get"));
     }
 
     public static Response getUserList(){
@@ -50,7 +49,7 @@ public class UserController {
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .queryParam("userRole",getTestData("filter_role"))
                 .queryParam("activeStatus",getTestData("filter_status"))
-                .get(getBaseUrl()+getUserListEndpoint());
+                .get(getBaseUrl()+getEndPoint("userList_get"));
     }
     public static Response registerUser(){
         registerUser.setFirstName(generateString(7,0,0));
@@ -66,7 +65,7 @@ public class UserController {
                     .header("Authorization","Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
-                    .post(getBaseUrl() + getUserRegisterEndpoint());
+                    .post(getBaseUrl() + getEndPoint("user_register"));
             getLogger().warn(response.getBody().asString());
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             registerUser.setId(jsonNode.get("id").asInt());
@@ -81,6 +80,6 @@ public class UserController {
         getLogger().info("deleting user. info - " + registerUser);
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .delete(getBaseUrl()+getUserDeleteEndpoint()+registerUser.getId());
+                .delete(getBaseUrl()+getEndPoint("user_delete")+registerUser.getId());
     }
 }
