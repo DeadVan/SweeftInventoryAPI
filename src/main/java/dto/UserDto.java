@@ -3,9 +3,20 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserDto {
+
+    public UserDto(String firstName, String lastName, String email, String phoneNumber, String userRole, String[] permissionList) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.userRole = userRole;
+        this.permissionList = permissionList;
+    }
 
     private String firstName;
     private int id;
@@ -37,4 +48,5 @@ public class UserDto {
         this.items = items;
         this.permissionList = permissionList;
     }
+
 }

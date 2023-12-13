@@ -1,5 +1,6 @@
 package utils;
 
+import dto.CategoriesDto;
 import dto.UserDto;
 import java.util.List;
 
@@ -14,5 +15,9 @@ public class ResponseUtils {
             }
         }
         return false;
+    }
+
+    public static boolean checkIfGetCategoriesListWorks(List<CategoriesDto> categoriesDtos){
+        return categoriesDtos.size() > 1;
     }
 }
