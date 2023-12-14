@@ -1,31 +1,44 @@
 {
   "base_url": "https://api.inventory.sweeftdigital.com",
+
   "login_post": "/user/login",
   "user_register" : "/user/register",
   "user_delete" : "/user/deactivate/",
   "userView_get": "/user/view",
   "userList_get": "/user/list",
   "userViewDetailed_get" : "/user/view/detailed",
-  "stockItem_post" : "/stockitem/add",
+
   "stockItem_put" : "/stockitem/update",
+  "stockItem_post" : "/stockitem/add",
   "stockItemList_get" : "/stockitem/list",
-  "stockItemDetailedId_get" : "/stockitem/detailed/{id}",
-  "stockItemId_delete" : "/stockitem/{id}",
+  "stockItemDetailedId_get" : "/stockitem/detailed/",
+  "stockItemId_delete" : "/stockitem/",
+
   "itemRequest_put" : "/itemRequest/update",
+
   "categoriesList_get" :  "/category/getCategories",
   "category_get" : "/category/",
   "category_post" : "/category/",
   "category_put" : "/category/",
+  "categoryIcon_put" : "/category/icon",
   "category_delete" : "/category/",
+
   "brand_get" : "/brand/",
   "brand_post" : "/brand/",
   "brand_put" : "/brand/",
   "brand_delete" : "/brand/",
   "brandList_get" : "/brand/",
+
   "model_get" : "/model/",
   "model_put" : "/model/",
   "model_delete" : "/model/",
   "model_post" : "/model/",
-  "modelList_get" : "/model/list"
+  "modelList_get" : "/model/list",
+
+  "item_get" : "/item/",
+  "item_put" : "/item/",
+  "item_delete" : "/item/",
+  "itemList_get" : "/item/",
+  "item_post" : "/item/"
 
 }

@@ -8,37 +8,41 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.io.File;
+import java.util.Arrays;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
 import static dto.category.CategoriesDto.postCategory;
 import static dto.category.CategoryAddDto.categoryAddDto;
 import static dto.LoginCrd.loginCrd;
+import static dto.category.CategoryEditDto.categoryEditDto;
 import static utils.DataReader.*;
 
 public class CategoryReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static Response getCategory(int categoryId){
-        getLogger().info("sending get request for category with id - " + categoryId);
+    public static Response getCategory(int categoryId) {
+        getLogger().info("sending GET request for category with id - " + categoryId);
         return RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("category_get") + categoryId);
     }
-    public static Response getCategories(){
-        getLogger().info("sending get request for categories list");
+
+    public static Response getCategories() {
+        getLogger().info("sending GET request for categories list");
         return RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("categoriesList_get"));
     }
+
     public static Response postCategory() {
-        getLogger().info("sending post request to create category");
+        getLogger().info("sending POST request to create category");
         try {
             Response response = RestAssured.given()
-                    .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                    .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.MULTIPART)
-                    .multiPart("name",categoryAddDto.getName())
-                    .multiPart("attributes",categoryAddDto.getAttributes())
-                    .multiPart("icon",categoryAddDto.getIcon())
+                    .multiPart("name", categoryAddDto.getName())
+                    .multiPart("attributes", categoryAddDto.getAttributes())
+                    .multiPart("icon", categoryAddDto.getIcon())
                     .post(getBaseUrl() + getEndPoint("category_post"));
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
@@ -50,29 +54,43 @@ public class CategoryReqs {
             throw new RuntimeException("error while error while Processing Json");
         }
     }
-    public static Response putCategory(){
-        getLogger().info("sending put request to edit categorywith id -" +  postCategory.getCategoryId());
-        categoryAddDto.setName("IphoniMagaria");
-        categoryAddDto.setAttributes("maimuni");
-        categoryAddDto.setIcon(new File(getTestData("icon2")));
-        getLogger().info("sending put request to edit category, info --" +  postCategory);
+
+    public static Response putCategory() {
+        getLogger().info("sending PUT request to edit category with id -" + postCategory.getCategoryId());
+
+        categoryEditDto.setName("magatiTLELELDSD");
+        categoryEditDto.setAttributes(Arrays.asList(categoryAddDto.getAttributes()));
+        getLogger().info("Category" + categoryEditDto);
         try {
-            String jsonString = mapper.writeValueAsString(categoryAddDto);
-            Response response =  RestAssured.given()
-                    .header("Authorization","Bearer " + loginCrd.getAccessToken())
+            String jsonString = mapper.writeValueAsString(categoryEditDto);
+
+            return RestAssured.given()
+                    .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
-                    .put(getBaseUrl()+getEndPoint("")+ postCategory.getCategoryId());
-            return response;
+                    .put(getBaseUrl() + getEndPoint("category_put") + postCategory.getCategoryId());
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
             throw new RuntimeException("error while JsonProcessingException");
         }
     }
-    public static Response deleteCategory(){
-        getLogger().info("sending delete request for category with id - " + postCategory.getCategoryId());
+
+    public static Response putCategoryIcon() {
+        getLogger().info("sending PUT request to edit category ICON with id -" + postCategory.getCategoryId());
+        Response response =  RestAssured.given()
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
+                .contentType(ContentType.MULTIPART)
+                .multiPart("icon",new File("src/main/resources/screenshot2.png"))
+                .queryParam("categoryId",postCategory.getCategoryId())
+                .put(getBaseUrl() + getEndPoint("categoryIcon_put"));
+        System.out.println(response.getBody().asString());
+        return response;
+    }
+
+    public static Response deleteCategory() {
+        getLogger().info("sending DELETE request for category with id - " + postCategory.getCategoryId());
         return RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl() + getEndPoint("category_delete") + postCategory.getCategoryId());
     }
 }

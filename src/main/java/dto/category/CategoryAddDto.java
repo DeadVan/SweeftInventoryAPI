@@ -14,8 +14,7 @@ public class CategoryAddDto {
     private String attributes;
     private File icon;
 
-    static String[] atribute = {getTestData("category_attributes")};
     static File iconn = new File(getTestData("icon"));
 
-    public static CategoryAddDto categoryAddDto = new CategoryAddDto(getTestData("category_name"),"atribute",iconn);
+    public static CategoryAddDto categoryAddDto = new CategoryAddDto(getTestData("category_name"),"attributes",iconn);
 }

@@ -11,6 +11,7 @@ import static aquality.selenium.browser.AqualityServices.getLogger;
 import static dto.LoginCrd.loginCrd;
 import static dto.brand.BrandDto.postBrand;
 import static dto.model.ModelDto.postModel;
+import static dto.model.ModelEditDto.modelEditDto;
 import static utils.DataReader.getBaseUrl;
 import static utils.DataReader.getEndPoint;
 import static utils.ParseUtil.parseModelList;
@@ -23,20 +24,20 @@ public class ModelReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static Response getModels(){
-        getLogger().info("sending get request for model list");
+        getLogger().info("sending GET request for model list");
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("modelList_get"));
     }
 
     public static Response getModel(int modelId){
-        getLogger().info("sending get request for model with id - " + modelId);
+        getLogger().info("sending GET request for model with id - " + modelId);
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("model_get") + modelId);
     }
     public static Response postModel(){
-        getLogger().info("sending post request for model");
+        getLogger().info("sending POST request for model");
         try {
             postModel.setModelName(generateString(7,0,0));
             postModel.setBrandId(getRandomBrandId());
@@ -59,8 +60,24 @@ public class ModelReqs {
             throw new RuntimeException("error while processing json");
         }
     }
+    public static Response putModel(){
+        getLogger().info("sending PUT request for model");
+        try {
+            modelEditDto.setModelName(generateString(7,0,0));
+            modelEditDto.setBrandId(getRandomBrandId());
+            modelEditDto.setCategoryId(getRandomCategoryId());
+            String jsonString = mapper.writeValueAsString(modelEditDto);
+            return RestAssured.given()
+                    .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                    .contentType(ContentType.JSON)
+                    .body(jsonString)
+                    .put(getBaseUrl()+getEndPoint("model_put") + postModel.getModelId());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static Response deleteModel(){
-        getLogger().info("sending delete request for model with id - " + postModel.getModelId());
+        getLogger().info("sending DELETE request for model with id - " + postModel.getModelId());
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl()+getEndPoint("model_delete")+postModel.getModelId());

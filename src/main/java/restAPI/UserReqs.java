@@ -18,7 +18,7 @@ public class UserReqs {
 
 
     public static Response postLogin() {
-        getLogger().info("Sending post request for authorization");
+        getLogger().info("Sending POST request for authorization");
         try {
             String jsonString = mapper.writeValueAsString(loginCrd);
             Response response = RestAssured.given()
@@ -37,14 +37,14 @@ public class UserReqs {
         }
     }
     public static Response getUserView() {
-        getLogger().info("sending get request for user view");
+        getLogger().info("sending GET request for user view");
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("userView_get"));
     }
 
     public static Response getUserList(){
-        getLogger().info("sending get request for user List");
+        getLogger().info("sending GET request for user List");
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .queryParam("userRole",getTestData("filter_role"))
@@ -58,7 +58,7 @@ public class UserReqs {
         registerUser.setPhoneNumber("+995 593" + generateString(6,0,6) );
         registerUser.setUserRole(getTestData("filter_role"));
         registerUser.setPermissionList(new String[]{getTestData("validator")});
-        getLogger().info("sending post request for user registration Credentials - " + registerUser);
+        getLogger().info("sending POST request for user registration Credentials - " + registerUser);
         try {
             String jsonString = mapper.writeValueAsString(registerUser);
             Response response =  RestAssured.given()
@@ -77,7 +77,7 @@ public class UserReqs {
         }
     }
     public static Response deleteUser(){
-        getLogger().info("deleting user. info - " + registerUser);
+        getLogger().info("sending DELETE request for user. info - " + registerUser);
         return RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl()+getEndPoint("user_delete")+registerUser.getId());

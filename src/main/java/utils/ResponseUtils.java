@@ -48,7 +48,7 @@ public class ResponseUtils {
         for (BrandDto brandDto : parseBrandList()){
             brandIds.add(brandDto.getBrandId());
         }
-        int size = brandIds.size();
+        int size = brandIds.size()-1;
         return brandIds.get(generateRandomNumber(size));
     }
     public static int getRandomCategoryId(){
@@ -56,7 +56,7 @@ public class ResponseUtils {
         for (CategoriesDto categoriesDto : parseCategoriesList()){
             categoryIds.add(categoriesDto.getCategoryId());
         }
-        int size = categoryIds.size();
+        int size = categoryIds.size()-1;
         return categoryIds.get(generateRandomNumber(size));
     }
 

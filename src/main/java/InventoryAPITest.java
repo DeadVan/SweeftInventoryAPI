@@ -1,7 +1,7 @@
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import restAPI.UnauthorizedReqs;
+import utils.DataProviderUtil;
 import utils.StatusCode;
 
 import static restAPI.BrandReqs.*;
@@ -30,31 +30,34 @@ public class InventoryAPITest {
         Assert.assertEquals(getCategories().getStatusCode(),StatusCode.PARTIAL_RESPONSE.getCode());
         Assert.assertEquals(getRandomCategory(parseCategoriesList()),StatusCode.OK.getCode());
         Assert.assertEquals(postCategory().getStatusCode(),StatusCode.CREATED.getCode());
+        Assert.assertEquals(putCategory().getStatusCode(),StatusCode.OK.getCode());
+        Assert.assertEquals(putCategoryIcon().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(deleteCategory().getStatusCode(),StatusCode.OK.getCode());
 
         Assert.assertEquals(getBrands().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(getRandomBrand(parseBrandList()),StatusCode.OK.getCode());
         Assert.assertEquals(postBrand().getStatusCode(),StatusCode.CREATED.getCode());
+        Assert.assertEquals(putBrand().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(deleteBrand().getStatusCode(),StatusCode.OK.getCode());
 
         Assert.assertEquals(getModels().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(getRandomModel(parseModelList()),StatusCode.OK.getCode());
         Assert.assertEquals(postModel().getStatusCode(),StatusCode.CREATED.getCode());
+        Assert.assertEquals(putModel().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(deleteModel().getStatusCode(),StatusCode.OK.getCode());
     }
 
-    @Test(testName = "Test unauthorized requests", dataProvider = "endpoint")
-    public void testUnauthorizedRequests(String getEndpoint,String putEndpoint){
-        Assert.assertEquals(UnauthorizedReqs.unauthorizedGetRequests(getEndpoint),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code");
-        Assert.assertEquals(UnauthorizedReqs.unauthorizedPuttRequests(putEndpoint),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code (putStockItem)");
-    }
-
-    @DataProvider(name = "endpoint")
-    public static Object[][] getRegData() {
-        return new Object[][] {
-                {getEndPoint("userView_get"),getEndPoint("stockItem_put")},
-                {getEndPoint("userViewDetailed_get"),getEndPoint("stockItem_post")},
-                {getEndPoint("userList_get"),getEndPoint("itemRequest_put")}
-        };
+    @Test(testName = "Test unauthorized requests", dataProviderClass = DataProviderUtil.class, dataProvider = "endpoint")
+    public void testUnauthorizedRequests(String... getEndpoint){
+        Assert.assertEquals(UnauthorizedReqs.unauthorizedGetRequests(getEndpoint[0]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code(Get)");
+        if (getEndpoint.length > 1){
+            Assert.assertEquals(UnauthorizedReqs.unauthorizedPuttRequests(getEndpoint[1]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code (PUT)");
+        }
+        if (getEndpoint.length > 2){
+            Assert.assertEquals(UnauthorizedReqs.unauthorizedDeletetRequests(getEndpoint[2]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code (DELETE)");
+        }
+        if (getEndpoint.length > 3){
+            Assert.assertEquals(UnauthorizedReqs.unauthorizedPostRequests(getEndpoint[3]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code (POST)");
+        }
     }
 }
