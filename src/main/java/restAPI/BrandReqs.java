@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import utils.StatusCode;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
 import static dto.brand.BrandDto.postBrand;
@@ -20,16 +21,24 @@ public class BrandReqs {
 
     public static Response getBrands(){
         getLogger().info("sending GET request for brand list");
-        return RestAssured.given()
+        Response response =  RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("brandList_get"));
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
 
     public static Response getBrand(int brandId){
         getLogger().info("sending GET request for brand with id - " + brandId);
-        return RestAssured.given()
+        Response response =  RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("brand_get") + brandId);
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
     public static Response postBrand(){
         getLogger().info("sending POST request for brand");
@@ -44,6 +53,9 @@ public class BrandReqs {
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postBrand.setBrandId(jsonNode.get("brandId").asInt());
             getLogger().info("Created Brand  - " + postBrand);
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
             return response;
         }catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -55,20 +67,28 @@ public class BrandReqs {
         try {
             brandEditDto.setBrandName(generateString(7,0,0));
             String jsonString = mapper.writeValueAsString(brandEditDto);
-            return   RestAssured.given()
+            Response response = RestAssured.given()
                     .header("Authorization","Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl()+getEndPoint("brand_put") + postBrand.getBrandId());
+            if (response.getStatusCode() != StatusCode.OK.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
+            return response;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
     public static Response deleteBrand(){
         getLogger().info("sending DELETE request for brand with id - " + postBrand.getBrandId());
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl()+getEndPoint("brand_delete")+postBrand.getBrandId());
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
 
     }
 }

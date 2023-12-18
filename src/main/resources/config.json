@@ -1,20 +1,40 @@
 {
   "base_url": "https://api.inventory.sweeftdigital.com",
 
+  "user_restoreForgottenPass_put": "/user/restoreForgottenPass",
+  "user_resetPassword_put": "/user/resetPassword",
+  "user_permissionDisable_put" : "/user/permission/disable",
+  "user_permissionAdd_put" : "/user/permission/add",
+  "user_edit_put" : "/user/edit",
+  "user_editUser_put" : "/user/editUser",
+  "user_refresh_post" : "/user/token/refresh",
+  "user_register_post" : "/user/register",
+  "logout_post": "/user/logout",
   "login_post": "/user/login",
-  "user_register" : "/user/register",
-  "user_delete" : "/user/deactivate/",
+  "user_generateForgottenPassLink_post" : "/user/generateForgotPassLink",
+  "user_confirmPass_post" : "/user/confirmPass",
   "userView_get": "/user/view",
-  "userList_get": "/user/list",
   "userViewDetailed_get" : "/user/view/detailed",
+  "userList_get": "/user/list",
+  "user_delete" : "/user/deactivate/",
 
-  "stockItem_put" : "/stockitem/update",
+  "stockItem_put" : "/stockitem/",
+  "stockItemId_delete" : "/stockitem/",
   "stockItem_post" : "/stockitem/add",
   "stockItemList_get" : "/stockitem/list",
   "stockItemDetailedId_get" : "/stockitem/detailed/",
-  "stockItemId_delete" : "/stockitem/",
 
-  "itemRequest_put" : "/itemRequest/update",
+  "model_get" : "/model/",
+  "model_put" : "/model/",
+  "model_delete" : "/model/",
+  "model_post" : "/model/",
+  "modelList_get" : "/model/list",
+
+  "item_get" : "/item/",
+  "item_put" : "/item/",
+  "item_delete" : "/item/",
+  "itemList_get" : "/item/",
+  "item_post" : "/item/",
 
   "categoriesList_get" :  "/category/getCategories",
   "category_get" : "/category/",
@@ -27,18 +47,6 @@
   "brand_post" : "/brand/",
   "brand_put" : "/brand/",
   "brand_delete" : "/brand/",
-  "brandList_get" : "/brand/",
-
-  "model_get" : "/model/",
-  "model_put" : "/model/",
-  "model_delete" : "/model/",
-  "model_post" : "/model/",
-  "modelList_get" : "/model/list",
-
-  "item_get" : "/item/",
-  "item_put" : "/item/",
-  "item_delete" : "/item/",
-  "itemList_get" : "/item/",
-  "item_post" : "/item/"
+  "brandList_get" : "/brand/"
 
 }

@@ -11,7 +11,6 @@ import java.util.List;
 import static restAPI.BrandReqs.getBrand;
 import static restAPI.CategoryReqs.getCategory;
 import static restAPI.ModelReqs.getModel;
-import static restAPI.ModelReqs.getModels;
 import static utils.DataReader.getTestData;
 import static utils.ParseUtil.*;
 import static utils.RandUtils.generateRandomNumber;

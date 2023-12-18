@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import utils.StatusCode;
 
 import java.io.File;
 import java.util.Arrays;
@@ -22,16 +23,24 @@ public class CategoryReqs {
 
     public static Response getCategory(int categoryId) {
         getLogger().info("sending GET request for category with id - " + categoryId);
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("category_get") + categoryId);
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
 
     public static Response getCategories() {
         getLogger().info("sending GET request for categories list");
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("categoriesList_get"));
+        if (response.getStatusCode() != StatusCode.PARTIAL_RESPONSE.getCode()){
+            getLogger().error(response.getBody().asString() + "||||" + response.getStatusCode());
+        }
+        return response;
     }
 
     public static Response postCategory() {
@@ -47,6 +56,9 @@ public class CategoryReqs {
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postCategory.setCategoryId(jsonNode.get("categoryId").asInt());
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
             getLogger().info("Created category  - " + postCategory);
             return response;
         } catch (JsonProcessingException e) {
@@ -64,11 +76,15 @@ public class CategoryReqs {
         try {
             String jsonString = mapper.writeValueAsString(categoryEditDto);
 
-            return RestAssured.given()
+            Response response = RestAssured.given()
                     .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl() + getEndPoint("category_put") + postCategory.getCategoryId());
+            if (response.getStatusCode() != StatusCode.OK.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
+            return response;
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
             throw new RuntimeException("error while JsonProcessingException");
@@ -83,14 +99,20 @@ public class CategoryReqs {
                 .multiPart("icon",new File("src/main/resources/screenshot2.png"))
                 .queryParam("categoryId",postCategory.getCategoryId())
                 .put(getBaseUrl() + getEndPoint("categoryIcon_put"));
-        System.out.println(response.getBody().asString());
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
         return response;
     }
 
     public static Response deleteCategory() {
         getLogger().info("sending DELETE request for category with id - " + postCategory.getCategoryId());
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl() + getEndPoint("category_delete") + postCategory.getCategoryId());
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import utils.StatusCode;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
 import static dto.LoginCrd.loginCrd;
@@ -25,16 +26,24 @@ public class ModelReqs {
 
     public static Response getModels(){
         getLogger().info("sending GET request for model list");
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("modelList_get"));
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
 
     public static Response getModel(int modelId){
         getLogger().info("sending GET request for model with id - " + modelId);
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("model_get") + modelId);
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
     public static Response postModel(){
         getLogger().info("sending POST request for model");
@@ -43,7 +52,6 @@ public class ModelReqs {
             postModel.setBrandId(getRandomBrandId());
             postModel.setCategoryId(getRandomCategoryId());
             String jsonString = mapper.writeValueAsString(postModel);
-            System.out.println(jsonString);
             Response response = RestAssured.given()
                     .header("Authorization","Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
@@ -53,6 +61,9 @@ public class ModelReqs {
             System.out.println(response.getBody().asString());
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postModel.setModelId(jsonNode.get("modelId").asInt());
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
             getLogger().info("Created model  - " + postModel);
             return response;
         }catch (JsonProcessingException e) {
@@ -67,20 +78,27 @@ public class ModelReqs {
             modelEditDto.setBrandId(getRandomBrandId());
             modelEditDto.setCategoryId(getRandomCategoryId());
             String jsonString = mapper.writeValueAsString(modelEditDto);
-            return RestAssured.given()
+            Response response = RestAssured.given()
                     .header("Authorization","Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl()+getEndPoint("model_put") + postModel.getModelId());
+            if (response.getStatusCode() != StatusCode.OK.getCode()){
+                getLogger().error(response.getBody().asString());
+            }
+            return response;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
     public static Response deleteModel(){
         getLogger().info("sending DELETE request for model with id - " + postModel.getModelId());
-        return RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization","Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl()+getEndPoint("model_delete")+postModel.getModelId());
-
+        if (response.getStatusCode() != StatusCode.OK.getCode()){
+            getLogger().error(response.getBody().asString());
+        }
+        return response;
     }
 }

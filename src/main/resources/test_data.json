@@ -1,6 +1,7 @@
 {
-  "user_email": "vatochitaia6@gmail.com",
-  "user_password": "Vato12345",
+  "user_email": "nikolozi.dadvani@makingscience.com",
+  "user_password": "DadvanA123@",
+  "user_new_password": "DadVanA1234@",
   "filter_role" : "ADMIN",
   "filter_status" : "ACTIVE",
   "category_name" : "andoirdovneba",
@@ -8,6 +9,6 @@
   "icon" : "src/main/resources/screenshot.png",
   "icon2" : "src/main/resources/screenshot2.png",
   "validator" : "VALIDATOR_CREATE",
-  "sweeft_mail" : "nikolozi.dadvani@makingscience.com"
+  "sweeft_mail" : "nikolozi.dadvaniTest@makingscience.com"
 }
 

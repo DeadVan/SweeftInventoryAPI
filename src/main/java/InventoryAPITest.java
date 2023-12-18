@@ -19,6 +19,11 @@ public class InventoryAPITest {
     public void inventoryTest() {
         Assert.assertEquals(postLogin().getStatusCode(), StatusCode.OK.getCode());
         Assert.assertFalse(loginCrd.getAccessToken().isEmpty(), "User doesn't have access token");
+
+        Assert.assertEquals(changePassword().getStatusCode(),StatusCode.OK.getCode());
+        Assert.assertEquals(resetPassword().getStatusCode(),StatusCode.OK.getCode());
+//        Assert.assertEquals(restoreForgottenPass().getStatusCode(),StatusCode.OK.getCode());
+
         Assert.assertEquals(getUserView().getStatusCode(), StatusCode.OK.getCode());
         Assert.assertEquals(parseUser(getUserView()).getEmail(), getTestData("user_email"), "user email and email from test_data is not equal");
         Assert.assertEquals(getUserList().getStatusCode(), StatusCode.OK.getCode());
@@ -45,6 +50,8 @@ public class InventoryAPITest {
         Assert.assertEquals(postModel().getStatusCode(),StatusCode.CREATED.getCode());
         Assert.assertEquals(putModel().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(deleteModel().getStatusCode(),StatusCode.OK.getCode());
+
+        Assert.assertEquals(logoutUser().getStatusCode(),StatusCode.OK.getCode());
     }
 
     @Test(testName = "Test unauthorized requests", dataProviderClass = DataProviderUtil.class, dataProvider = "endpoint")
