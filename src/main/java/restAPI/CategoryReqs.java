@@ -3,6 +3,7 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -21,6 +22,7 @@ import static utils.DataReader.*;
 public class CategoryReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    @Step("Get category with id - {categoryId}")
     public static Response getCategory(int categoryId) {
         getLogger().info("sending GET request for category with id - " + categoryId);
         Response response = RestAssured.given()
@@ -32,6 +34,7 @@ public class CategoryReqs {
         return response;
     }
 
+    @Step("Get categories list")
     public static Response getCategories() {
         getLogger().info("sending GET request for categories list");
         Response response = RestAssured.given()
@@ -42,7 +45,7 @@ public class CategoryReqs {
         }
         return response;
     }
-
+    @Step("Create a category")
     public static Response postCategory() {
         getLogger().info("sending POST request to create category");
         try {
@@ -67,6 +70,7 @@ public class CategoryReqs {
         }
     }
 
+    @Step("Edit category with id")
     public static Response putCategory() {
         getLogger().info("sending PUT request to edit category with id -" + postCategory.getCategoryId());
 
@@ -91,6 +95,7 @@ public class CategoryReqs {
         }
     }
 
+    @Step("Edit category icon with id")
     public static Response putCategoryIcon() {
         getLogger().info("sending PUT request to edit category ICON with id -" + postCategory.getCategoryId());
         Response response =  RestAssured.given()
@@ -105,6 +110,7 @@ public class CategoryReqs {
         return response;
     }
 
+    @Step("Delete category with id")
     public static Response deleteCategory() {
         getLogger().info("sending DELETE request for category with id - " + postCategory.getCategoryId());
         Response response = RestAssured.given()

@@ -3,6 +3,7 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -10,13 +11,10 @@ import utils.StatusCode;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
 import static dto.LoginCrd.loginCrd;
-import static dto.brand.BrandDto.postBrand;
 import static dto.model.ModelDto.postModel;
 import static dto.model.ModelEditDto.modelEditDto;
 import static utils.DataReader.getBaseUrl;
 import static utils.DataReader.getEndPoint;
-import static utils.ParseUtil.parseModelList;
-import static utils.RandUtils.generateRandomNumber;
 import static utils.RandUtils.generateString;
 import static utils.ResponseUtils.*;
 
@@ -24,6 +22,7 @@ public class ModelReqs {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    @Step("Get models list")
     public static Response getModels(){
         getLogger().info("sending GET request for model list");
         Response response = RestAssured.given()
@@ -35,6 +34,8 @@ public class ModelReqs {
         return response;
     }
 
+
+    @Step("Get model with id - {modelId}")
     public static Response getModel(int modelId){
         getLogger().info("sending GET request for model with id - " + modelId);
         Response response = RestAssured.given()
@@ -45,6 +46,8 @@ public class ModelReqs {
         }
         return response;
     }
+
+    @Step("Create a model")
     public static Response postModel(){
         getLogger().info("sending POST request for model");
         try {
@@ -71,6 +74,8 @@ public class ModelReqs {
             throw new RuntimeException("error while processing json");
         }
     }
+
+    @Step("Edit model")
     public static Response putModel(){
         getLogger().info("sending PUT request for model");
         try {
@@ -91,6 +96,8 @@ public class ModelReqs {
             throw new RuntimeException(e);
         }
     }
+
+    @Step("Delete model with id")
     public static Response deleteModel(){
         getLogger().info("sending DELETE request for model with id - " + postModel.getModelId());
         Response response = RestAssured.given()

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.user.ResetUserPasswordDto;
 import dto.user.UserDto;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -22,7 +23,7 @@ public class UserReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static UserDto registerUser = new UserDto();
 
-
+    @Step("Perform login and get access token")
     public static Response postLogin() {
         getLogger().info("Sending POST request for authorization");
         try {
@@ -45,6 +46,7 @@ public class UserReqs {
         }
     }
 
+    @Step("Get user view")
     public static Response getUserView() {
         getLogger().info("sending GET request for user view");
         Response response = RestAssured.given()
@@ -56,6 +58,7 @@ public class UserReqs {
         return response;
     }
 
+    @Step("Get user list with filters")
     public static Response getUserList() {
         getLogger().info("sending GET request for user List");
         Response response = RestAssured.given()
@@ -69,6 +72,7 @@ public class UserReqs {
         return response;
     }
 
+    @Step("Register a new user")
     public static Response registerUser() {
         registerUser.setFirstName(generateString(7, 0, 0));
         registerUser.setLastName(generateString(7, 0, 0));
@@ -97,6 +101,7 @@ public class UserReqs {
         }
     }
 
+    @Step("Delete registered user")
     public static Response deleteUser() {
         getLogger().info("sending DELETE request for user. info - " + registerUser);
         Response response = RestAssured.given()
@@ -108,6 +113,7 @@ public class UserReqs {
         return response;
     }
 
+    @Step("Logout user")
     public static Response logoutUser() {
         getLogger().info("sending POST request to logout user");
         Response response = RestAssured.given()
@@ -119,6 +125,7 @@ public class UserReqs {
         return response;
     }
 
+    @Step("Reset user password")
     public static Response changePassword() {
         getLogger().info("sending PUT request to change password");
         try {
@@ -138,6 +145,7 @@ public class UserReqs {
         }
     }
 
+    @Step("Restore forgotten password")
     public static Response resetPassword() {
         getLogger().info("sending PUT request to reset password as it was");
         String changedPassword = resetUserPasswordDto.getNewPassword();

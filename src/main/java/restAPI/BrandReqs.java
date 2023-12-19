@@ -3,6 +3,7 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -19,6 +20,7 @@ import static utils.RandUtils.generateString;
 public class BrandReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    @Step("Get brands list")
     public static Response getBrands(){
         getLogger().info("sending GET request for brand list");
         Response response =  RestAssured.given()
@@ -30,6 +32,7 @@ public class BrandReqs {
         return response;
     }
 
+    @Step("Get brand with id - {brandId}")
     public static Response getBrand(int brandId){
         getLogger().info("sending GET request for brand with id - " + brandId);
         Response response =  RestAssured.given()
@@ -40,6 +43,8 @@ public class BrandReqs {
         }
         return response;
     }
+
+    @Step("Create a brand")
     public static Response postBrand(){
         getLogger().info("sending POST request for brand");
         try {
@@ -62,6 +67,8 @@ public class BrandReqs {
             throw new RuntimeException("error while processing json");
         }
     }
+
+    @Step("Edit brand")
     public static Response putBrand(){
         getLogger().info("sending PUT request for brand");
         try {
@@ -80,6 +87,8 @@ public class BrandReqs {
             throw new RuntimeException(e);
         }
     }
+
+    @Step("Delete brand with id - {brandId}")
     public static Response deleteBrand(){
         getLogger().info("sending DELETE request for brand with id - " + postBrand.getBrandId());
         Response response = RestAssured.given()

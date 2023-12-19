@@ -1,9 +1,18 @@
+import aquality.selenium.browser.AqualityServices;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 import restAPI.UnauthorizedReqs;
 import utils.DataProviderUtil;
 import utils.StatusCode;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static aquality.selenium.browser.AqualityServices.getLogger;
 import static restAPI.BrandReqs.*;
 import static restAPI.ModelReqs.*;
 import static restAPI.UserReqs.*;
@@ -12,10 +21,10 @@ import static restAPI.CategoryReqs.*;
 import static utils.DataReader.*;
 import static utils.ParseUtil.*;
 import static utils.ResponseUtils.*;
-
+@Feature("Inventory API Tests")
 public class InventoryAPITest {
-
     @Test(testName = "Test User controller,Category controller requests")
+    @Description("Test various requests related to admin based controllers")
     public void inventoryTest() {
         Assert.assertEquals(postLogin().getStatusCode(), StatusCode.OK.getCode());
         Assert.assertFalse(loginCrd.getAccessToken().isEmpty(), "User doesn't have access token");
@@ -55,6 +64,7 @@ public class InventoryAPITest {
     }
 
     @Test(testName = "Test unauthorized requests", dataProviderClass = DataProviderUtil.class, dataProvider = "endpoint")
+    @Description("Test unauthorized requests using different HTTP methods")
     public void testUnauthorizedRequests(String... getEndpoint){
         Assert.assertEquals(UnauthorizedReqs.unauthorizedGetRequests(getEndpoint[0]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code(Get)");
         if (getEndpoint.length > 1){
@@ -65,6 +75,17 @@ public class InventoryAPITest {
         }
         if (getEndpoint.length > 3){
             Assert.assertEquals(UnauthorizedReqs.unauthorizedPostRequests(getEndpoint[3]),StatusCode.UNAUTHORIZED.getCode(),"request should be UNAUTHORIZED! with 401 status code (POST)");
+        }
+    }
+
+
+    @AfterTest
+    public void attachLogs() {
+        try {
+            String logContent = new String(Files.readAllBytes(Paths.get(getTestData("log_path"))));
+            Allure.addAttachment("Test Logs", "text/plain", logContent);
+        } catch (Exception e) {
+            getLogger().info(e.getMessage());
         }
     }
 }

@@ -9,6 +9,7 @@
   "icon" : "src/main/resources/screenshot.png",
   "icon2" : "src/main/resources/screenshot2.png",
   "validator" : "VALIDATOR_CREATE",
-  "sweeft_mail" : "nikolozi.dadvaniTest@makingscience.com"
+  "sweeft_mail" : "nikolozi.dadvaniTest@makingscience.com",
+  "log_path" : "/target/log/log.log"
 }
 
