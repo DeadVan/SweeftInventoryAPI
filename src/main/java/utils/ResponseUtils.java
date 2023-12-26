@@ -2,6 +2,7 @@ package utils;
 
 import dto.brand.BrandDto;
 import dto.category.CategoriesDto;
+import dto.item.ItemDto;
 import dto.model.ModelDto;
 import dto.user.UserDto;
 
@@ -10,10 +11,11 @@ import java.util.List;
 
 import static restAPI.BrandReqs.getBrand;
 import static restAPI.CategoryReqs.getCategory;
+import static restAPI.ItemReqs.getItem;
 import static restAPI.ModelReqs.getModel;
 import static utils.DataReader.getTestData;
 import static utils.ParseUtil.*;
-import static utils.RandUtils.generateRandomNumber;
+import static utils.RandUtils.genRandNumb;
 
 public class ResponseUtils {
 
@@ -32,15 +34,20 @@ public class ResponseUtils {
 
     public static int getRandomBrand(List<BrandDto> brandDtos){
         int size = brandDtos.size()-1;
-        return getBrand(brandDtos.get(generateRandomNumber(size)).getBrandId()).getStatusCode();
+        return getBrand(brandDtos.get(genRandNumb(size)).getBrandId()).getStatusCode();
+    }
+
+    public static int getRandomItem(List<ItemDto> itemDtos){
+        int size = itemDtos.size()-1;
+        return getItem(itemDtos.get(genRandNumb(size)).getItemId()).getStatusCode();
     }
     public static int getRandomCategory(List<CategoriesDto> categoriesDtos){
         int size = categoriesDtos.size()-1;
-        return getCategory(categoriesDtos.get(generateRandomNumber(size)).getCategoryId()).getStatusCode();
+        return getCategory(categoriesDtos.get(genRandNumb(size)).getCategoryId()).getStatusCode();
     }
     public static int getRandomModel(List<ModelDto> modelDtos){
         int size = modelDtos.size()-1;
-        return getModel(modelDtos.get(generateRandomNumber(size)).getModelId()).getStatusCode();
+        return getModel(modelDtos.get(genRandNumb(size)).getModelId()).getStatusCode();
     }
     public static int getRandomBrandId(){
         List<Integer> brandIds = new ArrayList<>();
@@ -48,7 +55,7 @@ public class ResponseUtils {
             brandIds.add(brandDto.getBrandId());
         }
         int size = brandIds.size()-1;
-        return brandIds.get(generateRandomNumber(size));
+        return brandIds.get(genRandNumb(size));
     }
     public static int getRandomCategoryId(){
         List<Integer> categoryIds = new ArrayList<>();
@@ -56,7 +63,7 @@ public class ResponseUtils {
             categoryIds.add(categoriesDto.getCategoryId());
         }
         int size = categoryIds.size()-1;
-        return categoryIds.get(generateRandomNumber(size));
+        return categoryIds.get(genRandNumb(size));
     }
 
 }

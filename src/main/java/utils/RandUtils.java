@@ -44,7 +44,7 @@ public class RandUtils {
             throw new RuntimeException("Error converting image to Base64");
         }
     }
-    public static int generateRandomNumber(int max) {
+    public static int genRandNumb(int max) {
         Random random = new Random();
         return random.nextInt(max + 1);
     }

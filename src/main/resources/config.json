@@ -47,6 +47,8 @@
   "brand_post" : "/brand/",
   "brand_put" : "/brand/",
   "brand_delete" : "/brand/",
-  "brandList_get" : "/brand/"
+  "brandList_get" : "/brand/",
+
+  "attribute_get" : "/attribute/"
 
 }

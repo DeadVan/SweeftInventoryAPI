@@ -60,8 +60,6 @@ public class ModelReqs {
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .post(getBaseUrl()+getEndPoint("model_post"));
-
-            System.out.println(response.getBody().asString());
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postModel.setModelId(jsonNode.get("modelId").asInt());
             if (response.getStatusCode() != StatusCode.CREATED.getCode()){
