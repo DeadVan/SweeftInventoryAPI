@@ -15,6 +15,7 @@ import dto.model.ModelListResponse;
 import dto.user.UserDto;
 import dto.user.UserListResponse;
 import io.restassured.response.Response;
+
 import java.util.List;
 
 import static aquality.selenium.browser.AqualityServices.getLogger;
@@ -28,6 +29,7 @@ import static restAPI.UserReqs.getUserList;
 public class ParseUtil {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+
     public static UserDto parseUser(Response response) {
         getLogger().info("Parsing User");
         return response.as(UserDto.class);
@@ -40,17 +42,17 @@ public class ParseUtil {
             Response response = getUserList();
             UserListResponse userListResponse = mapper.readValue(response.getBody().asString(), UserListResponse.class);
             return userListResponse.getContent();
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
             throw new RuntimeException("exception during parsing user list");
         }
     }
 
-    public static List<CategoriesDto> parseCategoriesList(){
+    public static List<CategoriesDto> parseCategoriesList() {
         getLogger().info("parsing categories list");
         try {
             Response response = getCategories();
-            CategoriesListResponse categoriesListResponse = mapper.readValue(response.getBody().asString(),CategoriesListResponse.class);
+            CategoriesListResponse categoriesListResponse = mapper.readValue(response.getBody().asString(), CategoriesListResponse.class);
             return categoriesListResponse.getContent();
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -58,11 +60,11 @@ public class ParseUtil {
         }
     }
 
-    public static List<BrandDto> parseBrandList(){
+    public static List<BrandDto> parseBrandList() {
         getLogger().info("parsing Brand list");
         try {
             Response response = getBrands();
-            BrandListResponse brandListResponse = mapper.readValue(response.getBody().asString(),BrandListResponse.class);
+            BrandListResponse brandListResponse = mapper.readValue(response.getBody().asString(), BrandListResponse.class);
             return brandListResponse.getContent();
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -70,23 +72,23 @@ public class ParseUtil {
         }
     }
 
-    public static List<AttributeDto> parseAttribute(int categoryId){
+    public static List<AttributeDto> parseAttribute(int categoryId) {
         getLogger().info("parsing attribute");
         try {
             Response response = getAttribute(categoryId);
             AttributeListResposne attributeListResposne = mapper.readValue(response.getBody().asString(), AttributeListResposne.class);
             return attributeListResposne.getContent();
-        }   catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
             throw new RuntimeException("exception during parsing attributes from category");
         }
     }
 
-    public static List<ModelDto> parseModelList(){
+    public static List<ModelDto> parseModelList() {
         getLogger().info("parsing Model list");
         try {
             Response response = getModels();
-            ModelListResponse modelListResponse = mapper.readValue(response.getBody().asString(),ModelListResponse.class);
+            ModelListResponse modelListResponse = mapper.readValue(response.getBody().asString(), ModelListResponse.class);
             return modelListResponse.getContent();
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
@@ -94,11 +96,11 @@ public class ParseUtil {
         }
     }
 
-    public static List<ItemDto> parseItemList(){
+    public static List<ItemDto> parseItemList() {
         getLogger().info("parsing Item list");
         try {
             Response response = getItems();
-            ItemListResponse itemListResponse = mapper.readValue(response.getBody().asString(),ItemListResponse.class);
+            ItemListResponse itemListResponse = mapper.readValue(response.getBody().asString(), ItemListResponse.class);
             return itemListResponse.getContent();
         } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());

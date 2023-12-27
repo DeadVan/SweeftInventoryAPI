@@ -28,7 +28,7 @@ public class CategoryReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("category_get") + categoryId);
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
@@ -40,11 +40,12 @@ public class CategoryReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("categoriesList_get"));
-        if (response.getStatusCode() != StatusCode.PARTIAL_RESPONSE.getCode()){
+        if (response.getStatusCode() != StatusCode.PARTIAL_RESPONSE.getCode()) {
             getLogger().error(response.getBody().asString() + "||||" + response.getStatusCode());
         }
         return response;
     }
+
     @Step("Create a category")
     public static Response postCategory() {
         getLogger().info("sending POST request to create category");
@@ -59,7 +60,7 @@ public class CategoryReqs {
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postCategory.setCategoryId(jsonNode.get("categoryId").asInt());
-            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()) {
                 getLogger().error(response.getBody().asString());
             }
             getLogger().info("Created category  - " + postCategory);
@@ -85,7 +86,7 @@ public class CategoryReqs {
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl() + getEndPoint("category_put") + postCategory.getCategoryId());
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
                 getLogger().error(response.getBody().asString());
             }
             return response;
@@ -98,13 +99,13 @@ public class CategoryReqs {
     @Step("Edit category icon with id")
     public static Response putCategoryIcon() {
         getLogger().info("sending PUT request to edit category ICON with id -" + postCategory.getCategoryId());
-        Response response =  RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .contentType(ContentType.MULTIPART)
-                .multiPart("icon",new File("src/main/resources/screenshot2.png"))
-                .queryParam("categoryId",postCategory.getCategoryId())
+                .multiPart("icon", new File("src/main/resources/screenshot2.png"))
+                .queryParam("categoryId", postCategory.getCategoryId())
                 .put(getBaseUrl() + getEndPoint("categoryIcon_put"));
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
@@ -116,7 +117,7 @@ public class CategoryReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl() + getEndPoint("category_delete") + postCategory.getCategoryId());
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;

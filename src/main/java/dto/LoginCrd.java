@@ -14,7 +14,8 @@ public class LoginCrd {
     private Boolean rememberMe;
     private String accessToken;
 
-    public static LoginCrd loginCrd = new LoginCrd(getTestData("user_email"),getTestData("user_password"),true);
+    public static LoginCrd loginCrd = new LoginCrd(getTestData("user_email"), getTestData("user_password"), true);
+
     public LoginCrd(String email, String password, boolean rememberMe) {
         this.email = email;
         this.password = password;

@@ -23,12 +23,12 @@ public class ModelReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Step("Get models list")
-    public static Response getModels(){
+    public static Response getModels() {
         getLogger().info("sending GET request for model list");
         Response response = RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("modelList_get"));
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
@@ -36,57 +36,57 @@ public class ModelReqs {
 
 
     @Step("Get model with id - {modelId}")
-    public static Response getModel(int modelId){
+    public static Response getModel(int modelId) {
         getLogger().info("sending GET request for model with id - " + modelId);
         Response response = RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("model_get") + modelId);
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
     }
 
     @Step("Create a model")
-    public static Response postModel(){
+    public static Response postModel() {
         getLogger().info("sending POST request for model");
         try {
-            postModel.setModelName(generateString(7,0,0));
+            postModel.setModelName(generateString(7, 0, 0));
             postModel.setBrandId(getRandomBrandId());
             postModel.setCategoryId(getRandomCategoryId());
             String jsonString = mapper.writeValueAsString(postModel);
             Response response = RestAssured.given()
-                    .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                    .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
-                    .post(getBaseUrl()+getEndPoint("model_post"));
+                    .post(getBaseUrl() + getEndPoint("model_post"));
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             postModel.setModelId(jsonNode.get("modelId").asInt());
-            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()) {
                 getLogger().error(response.getBody().asString());
             }
             getLogger().info("Created model  - " + postModel);
             return response;
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             getLogger().error(e.getMessage());
             throw new RuntimeException("error while processing json");
         }
     }
 
     @Step("Edit model")
-    public static Response putModel(){
+    public static Response putModel() {
         getLogger().info("sending PUT request for model");
         try {
-            modelEditDto.setModelName(generateString(7,0,0));
+            modelEditDto.setModelName(generateString(7, 0, 0));
             modelEditDto.setBrandId(getRandomBrandId());
             modelEditDto.setCategoryId(getRandomCategoryId());
             String jsonString = mapper.writeValueAsString(modelEditDto);
             Response response = RestAssured.given()
-                    .header("Authorization","Bearer " + loginCrd.getAccessToken())
+                    .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                     .contentType(ContentType.JSON)
                     .body(jsonString)
-                    .put(getBaseUrl()+getEndPoint("model_put") + postModel.getModelId());
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
+                    .put(getBaseUrl() + getEndPoint("model_put") + postModel.getModelId());
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
                 getLogger().error(response.getBody().asString());
             }
             return response;
@@ -96,12 +96,12 @@ public class ModelReqs {
     }
 
     @Step("Delete model with id")
-    public static Response deleteModel(){
+    public static Response deleteModel() {
         getLogger().info("sending DELETE request for model with id - " + postModel.getModelId());
         Response response = RestAssured.given()
-                .header("Authorization","Bearer " + loginCrd.getAccessToken())
-                .delete(getBaseUrl()+getEndPoint("model_delete")+postModel.getModelId());
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+                .header("Authorization", "Bearer " + loginCrd.getAccessToken())
+                .delete(getBaseUrl() + getEndPoint("model_delete") + postModel.getModelId());
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;

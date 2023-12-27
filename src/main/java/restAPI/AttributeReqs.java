@@ -9,7 +9,7 @@ import static utils.DataReader.*;
 
 public class AttributeReqs {
 
-    public static Response getAttribute(int categoryId){
+    public static Response getAttribute(int categoryId) {
         getLogger().info("sending GET request for attribute");
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())

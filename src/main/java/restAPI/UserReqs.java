@@ -3,7 +3,6 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.user.ResetUserPasswordDto;
 import dto.user.UserDto;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
@@ -36,7 +35,7 @@ public class UserReqs {
 
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             loginCrd.setAccessToken(jsonNode.get("accessToken").asText());
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
                 getLogger().error(response.getBody().asString() + response.getStatusCode());
             }
             return response;
@@ -52,7 +51,7 @@ public class UserReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .get(getBaseUrl() + getEndPoint("userView_get"));
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
@@ -66,7 +65,7 @@ public class UserReqs {
                 .queryParam("userRole", getTestData("filter_role"))
                 .queryParam("activeStatus", getTestData("filter_status"))
                 .get(getBaseUrl() + getEndPoint("userList_get"));
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString());
         }
         return response;
@@ -91,7 +90,7 @@ public class UserReqs {
             getLogger().warn(response.getBody().asString());
             JsonNode jsonNode = mapper.readTree(response.body().asString());
             registerUser.setId(jsonNode.get("id").asInt());
-            if (response.getStatusCode() != StatusCode.CREATED.getCode()){
+            if (response.getStatusCode() != StatusCode.CREATED.getCode()) {
                 getLogger().error(response.getBody().asString() + response.getStatusCode());
             }
             return response;
@@ -107,7 +106,7 @@ public class UserReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .delete(getBaseUrl() + getEndPoint("user_delete") + registerUser.getId());
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString() + response.getStatusCode());
         }
         return response;
@@ -119,7 +118,7 @@ public class UserReqs {
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + loginCrd.getAccessToken())
                 .post(getBaseUrl() + getEndPoint("logout_post"));
-        if (response.getStatusCode() != StatusCode.OK.getCode()){
+        if (response.getStatusCode() != StatusCode.OK.getCode()) {
             getLogger().error(response.getBody().asString() + response.getStatusCode());
         }
         return response;
@@ -135,8 +134,8 @@ public class UserReqs {
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl() + getEndPoint("user_resetPassword_put"));
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
-                getLogger().error(response.getBody().asString()+ response.getStatusCode());
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
+                getLogger().error(response.getBody().asString() + response.getStatusCode());
             }
             return response;
         } catch (JsonProcessingException e) {
@@ -158,8 +157,8 @@ public class UserReqs {
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl() + getEndPoint("user_resetPassword_put"));
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
-                getLogger().error(response.getBody().asString()+ response.getStatusCode());
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
+                getLogger().error(response.getBody().asString() + response.getStatusCode());
             }
             return response;
         } catch (JsonProcessingException e) {
@@ -177,12 +176,12 @@ public class UserReqs {
         resetUserPasswordDto.setUniqueString(mailResetPasswordUniqueString);
         try {
             String jsonString = mapper.writeValueAsString(resetUserPasswordDto);
-            Response response =  RestAssured.given()
+            Response response = RestAssured.given()
                     .contentType(ContentType.JSON)
                     .body(jsonString)
                     .put(getBaseUrl() + getEndPoint("user_restoreForgottenPass_put"));
-            if (response.getStatusCode() != StatusCode.OK.getCode()){
-                getLogger().error(response.getBody().asString()+ response.getStatusCode());
+            if (response.getStatusCode() != StatusCode.OK.getCode()) {
+                getLogger().error(response.getBody().asString() + response.getStatusCode());
             }
             return response;
         } catch (JsonProcessingException e) {

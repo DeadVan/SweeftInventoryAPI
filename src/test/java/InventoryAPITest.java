@@ -64,9 +64,9 @@ public class InventoryAPITest {
 
         Assert.assertEquals(getItems().getStatusCode(),StatusCode.OK.getCode());
         Assert.assertEquals(getRandomItem(parseItemList()),StatusCode.OK.getCode());
-//        Assert.assertEquals(postItem().getStatusCode(),StatusCode.CREATED.getCode());
-//        Assert.assertEquals(deleteItem().getStatusCode(),StatusCode.OK.getCode());
-
+        Assert.assertEquals(postItem().getStatusCode(),StatusCode.CREATED.getCode());
+        Assert.assertEquals(putItem().getStatusCode(),StatusCode.OK.getCode());
+        Assert.assertEquals(deleteItem().getStatusCode(),StatusCode.OK.getCode());
 
         Assert.assertEquals(logoutUser().getStatusCode(),StatusCode.OK.getCode());
     }

@@ -12,12 +12,13 @@ import static utils.RandUtils.generateString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ItemDto {
 
     private int itemId;
     private String itemName;
-    private int categoryId;
     private int modelId;
+    private int categoryId;
     private String categoryName;
     private String brandName;
     private String modelName;
@@ -31,5 +32,7 @@ public class ItemDto {
         this.attributesWithValues = attributesWithValues;
         this.serialIds = serialIds;
     }
+
+    public static ItemDto itemDto = new ItemDto();
 
 }
