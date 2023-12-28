@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
-    <test name="parameters">
+<suite name="All Test Suite" thread-count="7" parallel="tests">
+    <test name="parameters" parallel="classes">
         <classes>
-            <class name="InventoryAPITest"/>
+            <class name="BrandControllerTest"/>
+            <class name="CategoryControllerTest"/>
+            <class name="ItemControllerTest"/>
+            <class name="ModelControllerTest"/>
+            <class name="UnauthorizedAPITest"/>
+            <class name="UserControllerTest"/>
         </classes>
     </test>
 </suite>

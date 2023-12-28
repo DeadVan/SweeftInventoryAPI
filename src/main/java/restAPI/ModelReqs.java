@@ -3,6 +3,7 @@ package restAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -23,6 +24,7 @@ public class ModelReqs {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Step("Get models list")
+    @Description("getting models")
     public static Response getModels() {
         getLogger().info("sending GET request for model list");
         Response response = RestAssured.given()
